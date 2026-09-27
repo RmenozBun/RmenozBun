@@ -8,46 +8,41 @@ import json
 import os
 import urllib.request
 from datetime import date, datetime, timezone
+from zoneinfo import ZoneInfo
+
+LOCAL_TZ = ZoneInfo("Asia/Bangkok")
 
 USER = "RmenozBun"
 BIRTHDAY = date(2002, 4, 2)
 JOINED_YEAR = 2024  # account creation year, never changes
 W = 56  # info column width in characters
 
-# Abstract emblem/icon art: twin curling horns meeting a crest core, wide
-# feathered wings spreading out, folding back into a tapering shield point.
+# Heart emblem: twin curling horns on the lobes, twin-tail strands flowing
+# up from the crown, wings flaring out where the heart is widest.
 ART = r"""
-    ###                                 ###
-   ####%                               %####
-   #####%%%                         %%%#####
-    #####%%%%%                   %%%  #####
-      #####%%%%%%             %%%   #####
-         ######%%%%%       %%%  ######
-             ######%%%% %%%%######
-                 ####%%%%%####
-                  %%%%%%%%%%%
-                   %%%%%%%%%
-                    %%%%%%%
-                     %%%%%
- ===   ===   ===   %%%%%%%%%   ===   ===   ===
-----  ----  ----- %%%%%%%%%%% -----  ----  ----
-::::: ::::: :::::%%%%%%%%%%%%%::::: ::::: :::::
-###### ##### #####%%%%%%%%%%%##### ##### ######
- #####  ####  ####%%%%%%%%%%%####  ####  #####
-  :::::  ::::  ::: %%%%%%%%% :::  ::::  :::::
-    ----  ---   -- %%%%%%%%% --   ---  ----
-      ===  ===      %%%%%%%      ===  ===
-         ####        %%%%%        ####
-           ####%%%%%%     %%%%%%####
-             #####%%%%%%%%%%%#####
-               ####%%%%%%%%%####
-                 %%%#######%%%
-                  %%%#####%%%
-                   :::%%%:::
-                    %%%%%%%
-                     %%%%%
-                      %%%
-                       .
+  .. .                                      . ..
+ ::: ::                                    :: :::
+---- ---                                  --- ----
+ #### ###                                ### ####
+                  ##          ##
+                 ###%        %###
+
+                 ##%%##    ##%%##
+                ##%%%%##  ##%%%%##
+         ..... ##%%%%%%%%%%%%%%%%## .....
+        ::::: ##%%%%%%%%%%%%%%%%%%## :::::
+        ##### ##%%%%%%%%%%%%%%%%%%## #####
+              ##%%%%%%%%%%%%%%%%%%##
+               ##%%%%%%%%%%%%%%%%##
+                ##%%%%%%%%%%%%%%##
+                 ##%%%%%%%%%%%%##
+                  ##%%%%%%%%%%##
+                   ##%%%%%%%%##
+                    ##%%%%%%##
+                     ##%%%%##
+                      ##%%##
+                       ####
+                       ##
 """
 
 # two tokens by design: the Actions GITHUB_TOKEN yields the contribution-style
@@ -180,7 +175,8 @@ def rule(title=""):
 
 
 def info_lines(s):
-    y, m, d = age(BIRTHDAY, date.today())
+    today = datetime.now(LOCAL_TZ).date()
+    y, m, d = age(BIRTHDAY, today)
     n = lambda x: f"{x:,}"
     return [
         [(f"{USER.lower()}@github ", "h"), ("─" * (W - len(USER) - 8), "d")],
@@ -189,7 +185,7 @@ def info_lines(s):
         kv("Uptime", f"{y} years, {m} months, {d} days"),
         kv("Host", "Personal Rig"),
         kv("Kernel", "Software Trainee"),
-        kv("IDE", "VS Code"),
+        kv("IDE", "VS Code, Claude Code"),
         [],
         kv("Languages.Programming", "Java, Python, C++ (IoT), JavaScript"),
         kv("Languages.Real", "Thai (native), English (basic)"),
@@ -209,9 +205,9 @@ def info_lines(s):
 def render(mode, stats):
     p = PALETTES[mode]
     out = [
-        '<svg xmlns="http://www.w3.org/2000/svg" width="840" height="500" viewBox="0 0 840 500" '
+        '<svg xmlns="http://www.w3.org/2000/svg" width="880" height="500" viewBox="0 0 880 500" '
         f'font-family="Consolas, Menlo, monospace" font-size="13px">',
-        f'<rect x="0.5" y="0.5" width="839" height="499" rx="10" fill="{p["bg"]}" stroke="{p["border"]}"/>',
+        f'<rect x="0.5" y="0.5" width="879" height="499" rx="10" fill="{p["bg"]}" stroke="{p["border"]}"/>',
     ]
     for i, line in enumerate(ART.strip("\n").split("\n")):
         out.append(f'<text x="25" y="{40 + i * 15}" fill="{p["art"]}" xml:space="preserve">{html.escape(line)}</text>')
@@ -219,7 +215,7 @@ def render(mode, stats):
         if not segs:
             continue
         spans = "".join(f'<tspan fill="{p[c]}">{html.escape(t)}</tspan>' for t, c in segs)
-        out.append(f'<text x="405" y="{45 + i * 21}" xml:space="preserve">{spans}</text>')
+        out.append(f'<text x="430" y="{45 + i * 21}" xml:space="preserve">{spans}</text>')
     out.append("</svg>")
     return "\n".join(out)
 
