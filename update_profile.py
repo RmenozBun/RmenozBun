@@ -193,6 +193,7 @@ def info_lines(s):
         [],
         rule("Contact"),
         kv("Email", "theeranat2445@gmail.com"),
+        kv("Portfolio", "my-portfolio-theta-virid-42.vercel.app"),
         [],
         rule("GitHub Stats"),
         kv2("Repos", f"{s['repos']} {{Contributed: {s['contributed']}}}", "Stars", n(s["stars"])),
