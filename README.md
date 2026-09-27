@@ -4,4 +4,6 @@
   <img alt="RmenozBun's GitHub profile" src="dark_mode.svg">
 </picture>
 
-**Portfolio:** [my-portfolio-theta-virid-42.vercel.app](https://my-portfolio-theta-virid-42.vercel.app/)
+## Links
+
+[![Portfolio](https://img.shields.io/badge/Portfolio-000000?style=for-the-badge&logo=vercel&logoColor=white)](https://my-portfolio-theta-virid-42.vercel.app/)
